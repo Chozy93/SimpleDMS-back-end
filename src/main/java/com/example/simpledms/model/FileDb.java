@@ -75,8 +75,13 @@ public class FileDb extends BaseTimeEntity {
     @Column
     private byte[] fileData;
 
-
-
+    public FileDb(String fileTitle, String fileContent, String fileName, String fileType, byte[] fileData) {
+        this.fileTitle = fileTitle;
+        this.fileContent = fileContent;
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileData = fileData;
+    }
 //    FID          NUMBER NOT NULL PRIMARY KEY,
 //    FILE_TITLE   VARCHAR2(1000),
 //    FILE_CONTENT VARCHAR2(1000),

@@ -3,11 +3,15 @@ package com.example.simpledms.service;
 
 import com.example.simpledms.model.FileDb;
 import com.example.simpledms.repository.FileDbRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -35,6 +39,35 @@ public class FileDbService {
     public Optional<FileDb> getFile(int id){
         Optional<FileDb> optionalFileDb = fileDbRepository.findById(id);
         return optionalFileDb;
+    }
+
+    public boolean deleteById(int id){
+        if(fileDbRepository.existsById(id)){
+            fileDbRepository.deleteById(id);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Page<FileDb> findByFileTitle(String title,Pageable pageable){
+        Page<FileDb> fileDbPage= fileDbRepository.findAllByFileTitleContaining(title,pageable);
+                return fileDbPage;
+    }
+
+    public FileDb store(String fileTitle,
+                                     String fileContent,
+                                     MultipartFile file) throws IOException
+    {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        FileDb fileDb = new FileDb(fileTitle,
+                                                        fileContent,
+                                                        fileName,
+                                                        file.getContentType(),
+                                                        file.getBytes());
+
+        return fileDbRepository.save(fileDb);
     }
 
 }

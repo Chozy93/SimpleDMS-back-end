@@ -38,8 +38,7 @@ public class DeptService {
     }
 
     public Dept save(Dept dept){
-        Dept dept2 = deptRepository.save(dept);
-        return dept2;
+        return  deptRepository.save(dept);
     }
     public Optional<Dept> findById(int dno){
         Optional<Dept> optionalDept = deptRepository.findById(dno);
